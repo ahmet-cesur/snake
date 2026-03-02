@@ -150,10 +150,16 @@ fun GameScreen(
                 )
             )
     ) {
+        Image(
+            painter = painterResource(id = R.drawable.bg_mountains),
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop,
+            alpha = 0.7f
+        )
+
         // Background decorations
         CloudBackground()
-        MountainBackground()
-        GrassBackground()
 
         Column(
             modifier = Modifier

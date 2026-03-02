@@ -478,8 +478,8 @@ class GameRenderer {
         val size = cellSize * 0.95f
         val halfSize = size / 2
         val cellHalf = cellSize / 2
-        // Match the corner radius of the outline (0.35f) to avoid body sticking out
-        val cornerRadius = CornerRadius(cellSize * 0.35f)
+        // Match the corner radius of the outline (0.45f) for more rounded corners
+        val cornerRadius = CornerRadius(cellSize * 0.45f)
         val topLeft = Offset(x - halfSize, y - halfSize)
         
         val l = x - halfSize
@@ -578,8 +578,8 @@ class GameRenderer {
         val size = cellSize * 0.95f
         val halfSize = size / 2
         val cellHalf = cellSize / 2
-        // Use simpler corner radius if needed, but 35% makes it softer/more round as requested
-        val cornerRad = cellSize * 0.35f 
+        // 45% corner radius for more rounded, pill-like segments
+        val cornerRad = cellSize * 0.45f 
         val strokeWidth = cellSize * 0.03f
         
         val l = x - halfSize
