@@ -99,9 +99,12 @@ class GameEngine(private val gameState: GameState) {
         // Move worm - add new head
         gameState.wormSegments.add(0, WormSegment(newHeadPos))
         
-        // Check if head moved onto TRAP
-        if (gameState.grid[newHeadPos.y][newHeadPos.x] == CellType.TRAP && 
-            !gameState.hasBox(newHeadPos)) {
+        // Check if ANY part of the worm is on a TRAP
+        val isOnTrap = gameState.wormSegments.any { segment ->
+            val pos = segment.position
+            gameState.grid[pos.y][pos.x] == CellType.TRAP && !gameState.hasBox(pos)
+        }
+        if (isOnTrap) {
             gameState.isGameOver = true
         }
         
@@ -181,6 +184,7 @@ class GameEngine(private val gameState: GameState) {
                 
                 if (gameState.isValidPosition(below) && 
                     gameState.grid[below.y][below.x] != CellType.WALL && 
+                    gameState.grid[below.y][below.x] != CellType.TRAP && 
                     !gameState.hasBox(below) && 
                     !gameState.hasWorm(below) &&
                     !gameState.isPortal(below) &&
@@ -210,9 +214,9 @@ class GameEngine(private val gameState: GameState) {
                 } else {
                     val cellType = gameState.grid[below.y][below.x]
                     val hasBox = gameState.hasBox(below)
-                    val hasApple = gameState.hasApple(below) 
-                    // Support comes from Wall, Box, Apple, or Trap (solid floor)
-                    cellType == CellType.WALL || cellType == CellType.TRAP || hasBox || hasApple
+                    val hasApple = gameState.hasApple(below)
+                    // Support comes from Wall, Box, or Apple (Traps are no longer solid floors)
+                    cellType == CellType.WALL || hasBox || hasApple
                 }
             }
 
