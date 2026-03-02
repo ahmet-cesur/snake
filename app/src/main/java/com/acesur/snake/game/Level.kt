@@ -493,6 +493,29 @@ object LevelRepository {
             boxes = listOf(Position(3, 4), Position(7, 4)),
             portal = Position(14, 4),
             minMoves = 87
+        ),
+        // Level 21
+        Level(
+            id = 21,
+            width = 16,
+            height = 10,
+            grid = listOf(
+                "................",
+                "................",
+                "................",
+                "................",
+                "................",
+                "................",
+                ".......X........",
+                "..WWWWWWWWWWW...",
+                "................",
+                "................"
+            ),
+            wormStart = listOf(Position(4, 6), Position(3, 6), Position(2, 6)),
+            apples = listOf(Position(7, 4)),
+            boxes = listOf(),
+            portal = Position(13, 6),
+            minMoves = 12
         )
     )
     init {
