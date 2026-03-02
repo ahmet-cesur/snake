@@ -239,7 +239,7 @@ object LevelRepository {
             apples = listOf(Position(8, 4)),
             boxes = listOf(),
             portal = Position(13, 4),
-            minMoves = 25
+            minMoves = 9
         ),
         // Level 10
         Level(

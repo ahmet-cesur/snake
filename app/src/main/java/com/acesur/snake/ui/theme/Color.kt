@@ -24,11 +24,11 @@ object GameColors {
     val GrassDark = Color(0xFF558B2F)
     val DirtBrown = Color(0xFF8D6E63)
     
-    // Worm colors (Apple Worm style - bright green)
-    val WormPink = Color(0xFF4CAF50) // Bright Green main
-    val WormPinkLight = Color(0xFF81C784) // Lighter Green
-    val WormPinkDark = Color(0xFF388E3C) // Darker Green for shading
-    val WormFace = Color(0xFF2E7D32) // Dark Green Face/Eyes
+    // Worm colors (Salmon)
+    val WormPink = Color(0xFFFA8072) // Salmon main
+    val WormPinkLight = Color(0xFFFFB0A5) // Lighter Salmon
+    val WormPinkDark = Color(0xFFD95F52) // Darker Salmon for shading
+    val WormFace = Color(0xFFC04A3D) // Dark Salmon Face/Eyes
     val WormCheek = Color(0xFFFFCDD2) // Light Pink Cheeks
     val WormEyeWhite = Color(0xFFFFFFFF) // Pure white for eyes
     val WormLips = Color(0xFFE91E63) // Bright Pink/Magenta lips
