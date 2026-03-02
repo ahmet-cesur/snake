@@ -10,18 +10,28 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.drawscope.translate
 import com.acesur.snake.game.CellType
 import com.acesur.snake.game.GameState
 import com.acesur.snake.game.Position
 import com.acesur.snake.ui.theme.GameColors
 import kotlin.math.cos
 import kotlin.math.sin
+import kotlin.math.abs
 
 class GameRenderer {
     
-    fun DrawScope.drawGame(gameState: GameState, cellSize: Float, offsetX: Float, offsetY: Float, animationProgress: Float) {
+    fun DrawScope.drawGame(
+        gameState: GameState, 
+        cellSize: Float, 
+        offsetX: Float, 
+        offsetY: Float, 
+        animationProgress: Float,
+        trapPainter: Painter
+    ) {
         // Draw grid elements
-        drawGrid(gameState, cellSize, offsetX, offsetY)
+        drawGrid(gameState, cellSize, offsetX, offsetY, trapPainter, animationProgress)
         
         // Draw portal (animated)
         gameState.portal?.let { portal ->
@@ -57,7 +67,14 @@ class GameRenderer {
         drawRect(brush = skyBrush)
     }
     
-    private fun DrawScope.drawGrid(gameState: GameState, cellSize: Float, offsetX: Float, offsetY: Float) {
+    private fun DrawScope.drawGrid(
+        gameState: GameState, 
+        cellSize: Float, 
+        offsetX: Float, 
+        offsetY: Float, 
+        trapPainter: Painter,
+        animationProgress: Float
+    ) {
         for (y in 0 until gameState.gridHeight) {
             for (x in 0 until gameState.gridWidth) {
                 val cellX = offsetX + x * cellSize
@@ -67,7 +84,7 @@ class GameRenderer {
                 if (y < gameState.grid.size && x < gameState.grid[y].size) {
                     when (gameState.grid[y][x]) {
                         CellType.WALL -> drawWall(cellX, cellY, cellSize, x, y, gameState)
-                        CellType.TRAP -> drawTrap(cellX, cellY, cellSize)
+                        CellType.TRAP -> drawTrap(cellX, cellY, cellSize, trapPainter, animationProgress)
                         CellType.EMPTY -> drawEmptyCell(cellX, cellY, cellSize)
                         else -> {}
                     }
@@ -76,49 +93,23 @@ class GameRenderer {
         }
     }
     
-    private fun DrawScope.drawTrap(x: Float, y: Float, cellSize: Float) {
-        // Dark metallic base
-        drawRect(
-            color = Color(0xFF2C3E50), // Dark steel blue
-            topLeft = Offset(x, y),
-            size = Size(cellSize, cellSize)
-        )
+    private fun DrawScope.drawTrap(
+        x: Float, 
+        y: Float, 
+        cellSize: Float, 
+        trapPainter: Painter,
+        animationProgress: Float
+    ) {
+        // Realistic fire flickering effect
+        val flicker = (sin(animationProgress * 15) * 0.05f) + 1.0f
+        val fireSize = cellSize * flicker
+        val offset = (cellSize - fireSize) / 2
         
-        // Hazard stripes (diagonal yellow/black) - Simplified to just border
-        drawRect(
-            color = Color(0xFFE74C3C), // Red hazard border
-            topLeft = Offset(x, y),
-            size = Size(cellSize, cellSize),
-            style = Stroke(width = cellSize * 0.1f)
-        )
-        
-        // Spikes
-        val spikeCount = 3
-        val spikeWidth = cellSize / spikeCount
-        val spikeHeight = cellSize * 0.4f
-        val basePath = Path()
-        
-        for (i in 0 until spikeCount) {
-            val spikeX = x + i * spikeWidth
-            val spikeY = y + cellSize - cellSize * 0.1f // Start from bottom (+margin)
-            
-            basePath.moveTo(spikeX, spikeY)
-            basePath.lineTo(spikeX + spikeWidth / 2, spikeY - spikeHeight) // Peak
-            basePath.lineTo(spikeX + spikeWidth, spikeY) // Base right
-            basePath.close()
+        translate(x + offset, y + offset) {
+            with(trapPainter) {
+                draw(size = Size(fireSize, fireSize))
+            }
         }
-        
-        drawPath(
-            path = basePath,
-            color = Color(0xFF95A5A6), // Metal grey spikes
-            style = Fill
-        )
-        
-        drawPath(
-            path = basePath,
-            color = Color(0xFF34495E), // Spike outline
-            style = Stroke(width = cellSize * 0.02f)
-        )
     }
     
     private fun DrawScope.drawEmptyCell(x: Float, y: Float, cellSize: Float) {

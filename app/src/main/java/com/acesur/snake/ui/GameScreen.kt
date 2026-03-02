@@ -189,6 +189,7 @@ fun GameScreen(
                     .padding(8.dp),
                 contentAlignment = Alignment.Center
             ) {
+                val trapPainter = painterResource(id = R.drawable.trap_fire)
                 Canvas(modifier = Modifier.fillMaxSize()) {
                     val canvasWidth = size.width
                     val canvasHeight = size.height
@@ -205,7 +206,7 @@ fun GameScreen(
                     val offsetY = (canvasHeight - gridHeight) / 2
                     
                     with(gameRenderer) {
-                        drawGame(gameState, cellSize, offsetX, offsetY, animationProgress)
+                        drawGame(gameState, cellSize, offsetX, offsetY, animationProgress, trapPainter)
                     }
                 }
             }
